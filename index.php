@@ -10,6 +10,8 @@ session_start();
 // description des variables les plus importantes : 
 // $keys['secret'] 	->
 // $url_Apidae 		->
+// 
+// Cette interface est un extrait de l'Exttranet de l'Office de Tourisme.
 
 	include "fonctions/fonctions_API.php";
 	

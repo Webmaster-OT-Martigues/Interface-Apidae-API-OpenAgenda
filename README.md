@@ -51,6 +51,19 @@
 
 <h1><b>Avant de commencer</b></h1>
 	<h2 id="introduction"><b>Introduction</b></h2>
+	
+	<p>Ajout d'une petite interface qui est un extrait notre Extranet à l'Office de Tourisme. </p>
+	<br>
+	<p>Cette interface n'utilise pas de fichier config car tout les paramètres sont passés via l'URL</p>
+	
+	<p>Paramètre URL</p>
+	<p>index.php?public=123456789123467891569</p>
+	<p>&secret=abcdefghijklmnopqrstuvwxyz123456</p>
+	<p>&apiKey=ABCDEFGH</p>
+	<p>&projetId=1234</p>
+	<p>&selectionIds1=XXXXXX</p>
+	
+	
 	<p>Vous trouverez ici toutes les ressources nécessaires pour paramétrer et utiliser notre l’API APIDAE / OPEN AGENDA.</p>
 	<p>Note et méthode de développement - Ce code source peut être utilisé et amélioré par tout le monde<br>							A ce jour, aucun <b>Github</b> héberge ce code source (01/09/2022)..</p>
 
