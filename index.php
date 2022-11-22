@@ -1,4 +1,5 @@
 <?php //On demarre les sessions
+
 session_start();
 
 // *****************************************************************************
@@ -9,7 +10,6 @@ session_start();
 // description des variables les plus importantes : 
 // $keys['secret'] 	->
 // $url_Apidae 		->
-
 
 	include "fonctions/fonctions_API.php";
 	
