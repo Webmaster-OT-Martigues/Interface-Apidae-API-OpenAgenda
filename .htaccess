@@ -1,0 +1,75 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    #Removes access to the system folder by users.
+    #Additionally this will allow you to create a System.php controller,
+    #previously this would not have been possible.
+    #'system' can be replaced if you have renamed your system folder.
+    RewriteCond %{REQUEST_URI} ^ci.*
+	RewriteCond %{REQUEST_URI} ^application.*
+    RewriteRule ^(.*)$ /index.php?/$1 [L]
+
+    #When your application folder isn't in the system folder
+    #This snippet prevents user access to the application folder
+    #Submitted by: Fabdrol
+    #Rename 'application' to your applications folder name.
+	# RewriteCond %{REQUEST_URI} ^application.*
+	# RewriteRule ^(.*)$ /index.php?/$1 [L]
+
+    RewriteCond %{REQUEST_URI} ^desire.*
+    RewriteRule ^(.*)$ /index.php?/$1 [L]
+
+    #Checks to see if the user is attempting to access a valid file,
+    #such as an image or css document, if this isn't true it sends the
+    #request to index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ index.php?/$1 [L]
+
+</IfModule>
+
+<IfModule !mod_rewrite.c>
+    # If we don't have mod_rewrite installed, all 404's
+    # can be sent to index.php, and everything works as normal.
+    # Submitted by: ElliotHaughin
+    ErrorDocument 404 /index.php
+</IfModule>
+
+# Restriction des adresses IP
+# Ordre de priorité des instructions : refuser puis autoriser
+# Order Deny,Allow
+# Autorise personne à accéder au site
+
+
+# …Sauf l’adresse IP x.x.x.x
+
+
+#RewriteCond %{REMOTE_ADDR} ^92\.[0-9]+\.[0-9]+\.[0-9]+ [OR]
+#RewriteCond %{REMOTE_ADDR} ^108\.[0-9]+\.[0-9]+\.[0-9]+ [OR]
+#RewriteCond %{REMOTE_ADDR} ^216\.[0-9]+\.[0-9]+\.[0-9]+ [OR]
+#RewriteCond %{REMOTE_ADDR} ^207\.[0-9]+\.[0-9]+\.[0-9]+
+#RewriteRule .* - [F] 
+
+#########################################################################################
+# Pour le code de blocage des web proxy il est possible de faire des règles d exception #
+#########################################################################################
+<IfModule mod_rewrite.c>
+ RewriteEngine on
+ RewriteCond %{HTTP:VIA}                 !^$ [OR]
+ RewriteCond %{HTTP:FORWARDED}           !^$ [OR]
+ RewriteCond %{HTTP:USERAGENT_VIA}       !^$ [OR]
+ RewriteCond %{HTTP:X_FORWARDED_FOR}     !^$ [OR]
+ RewriteCond %{HTTP:PROXY_CONNECTION}    !^$ [OR]
+ RewriteCond %{HTTP:XPROXY_CONNECTION}   !^$ [OR]
+ RewriteCond %{HTTP:HTTP_PC_REMOTE_ADDR} !^$ [OR]
+ RewriteCond %{HTTP:XROXY_CONNECTION}    !^$ [OR]
+ RewriteCond %{HTTP:X-FORWARDED-FOR}     !^$ [OR]
+ RewriteCond %{HTTP:HTTP_CLIENT_IP}      !^$ [OR]
+ RewriteCond %{HTTP:FORWARDED-FOR}       !^$ [OR]
+ RewriteCond %{HTTP:X-FORWARDED}         !^$
+ RewriteCond %{HTTP_REFERER}             !(.*)proxy-01.com(.*)
+ RewriteCond %{HTTP_REFERER}             !(.*)proxy-02.net(.*)
+ RewriteCond %{HTTP_REFERER}             !(.*)proxy-03.fr(.*)
+ RewriteRule ^(.*)$ - [F]
+</IfModule>

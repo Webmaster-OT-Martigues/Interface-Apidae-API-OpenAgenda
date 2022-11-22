@@ -1,4 +1,4 @@
-<h1>API (PHP) Apidae -> OpenAgenda</h1>
+<h1>API (PHP) Apidae -> OpenAgenda (+interface)</h1>
 
 <div align="center">
 	<img alt="Office de Tourisme de Martigues" src="https://user-images.githubusercontent.com/8257981/201097229-43a65b5a-5801-4542-ba78-9ad476939cee.png" />
@@ -51,19 +51,21 @@
 
 <h1><b>Avant de commencer</b></h1>
 <h2 id="introduction"><b>Introduction</b></h2>
-<p>Ajout d'une petite interface qui est un extrait notre Extranet à l'Office de Tourisme. </p>
-<br>
-<p>Cette interface n'utilise pas de fichier config car tout les paramètres sont passés via l'URL</p>
-<p>Paramètre URL</p>
-<p>index.php?public=123456789123467891569</p>
-<p>&secret=abcdefghijklmnopqrstuvwxyz123456</p>
-<p>&apiKey=ABCDEFGH</p>
-<p>&projetId=1234</p>
-<p>&selectionIds1=XXXXXX</p>
+<h4>Mise à jour : Ajout d'une petite interface web. (Voir capture d'écran de l'Office de Tourisme de Martigues)</h4>
+<p>Cette interface n'utilise pas de fichier config car tout les paramètres sont passés via son URL. Elle faisait partie de l'Extranet de l'Office de Tourisme de Martigues et en reprends son template css.</p>
 	
-	
+<p><b>Paramètre URL : </b></p>
+<p><b>index.php</b>?<b>public=</b>12345678912346789<b>&secret=</b>abcdefghijklmnopqrstuvwxyz<b>&apiKey</b>=ABCDEFGH<b>&projetId=</b>1234<b>&selectionIds1=</b>XXXXXX</p>
+
+<p>Les Clefs "<b>public</b>" et "<b>secret</b>" sont tirées de votre <b>OpenAgenda</b> et <b>ApiKey</b>, <b>projecId</b>, <b>selectionIds</b> sont disponibles sur votre projet APIDAE. Vous avez un descriptif plus bas dans ce Readme.</p>
+<p> Le code source est fonctionnel mais doit toute fois être nettoyé (pour une certaine considération de lisibilité)</p>
+
+<img alt="Office de Tourisme de Martigues" src="https://user-images.githubusercontent.com/8257981/203296075-15604545-cf14-4455-8186-e2170a601cd8.jpg" />
+
+-------
+
 <p>Vous trouverez ici toutes les ressources nécessaires pour paramétrer et utiliser notre l’API APIDAE / OPEN AGENDA.</p>
-<p>Note et méthode de développement - Ce code source peut être utilisé et amélioré par tout le monde<br></p>
+<p>Note et méthode de développement - Ce code source peut être utilisé et amélioré par tout le monde.</p>
 
 -------
 
@@ -77,7 +79,7 @@
 
 ----------
 
-<h2 id="quick-start"><b>Comment obtenir l'accès </b></h2>
+<h2 id="quick-start"><b>Comment obtenir l'accès</b></h2>
 
 <p>Vous devez demander des clefs publics et privés au support d’Open Agenda. Une fois reçu par mail, on insère ces clefs dans le fichier Config de l’API. L’API va l’utiliser pour établir une liaison d’accès provisoire et sécurisé. </p>
 <p>Nous pouvons traduire token par "Jeton d'accès spécial". Il vous faudra donc fournir des clefs pour la lecture sur APIDAE et des clefs pour l'écriture sur l'OpenAgenda.</p>

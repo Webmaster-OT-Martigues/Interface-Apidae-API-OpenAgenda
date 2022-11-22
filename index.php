@@ -951,24 +951,17 @@ session_start();
 	
 	</section>
 	
-
 	<script src="js/jquery.min.js"></script> <!-- jQuery Library -->
 	<script src="js/jquery-ui.min.js"></script> <!-- jQuery UI -->
 	<script src="js/jquery.easing.1.3.js"></script><!-- jQuery Easing - Requirred for Lightbox + Pie Charts-->
 	
 	<script src="js/bootstrap.min.js"></script> <!-- Charts -->
-
-	<script src="js/easypiechart.js"></script> <!-- EasyPieChart - Animated Pie Charts -->
     <script src="js/select.min.js"></script> <!--  Custom Select -->
 	<script src="js/slider.min.js"></script> <!-- Input Slider -->
-
 	<script src="js/icheck.js"></script> <!-- Custom Checkbox + Radio -->
-    <script src="js/autosize.min.js"></script> <!-- Textarea autosize -->	
 	<script src="js/pirobox.min.js"></script>
 	<!-- UX -->
 	<script src="js/scroll.min.js"></script> <!-- Custom Scrollbar -->
 	
 	<script src="js/materialize.min.js"></script> <!-- Custom Checkbox + Radio -->
-
 	<script src="js/functions.js"></script>
-	<script type="text/javascript" src="js/script.js"></script>
