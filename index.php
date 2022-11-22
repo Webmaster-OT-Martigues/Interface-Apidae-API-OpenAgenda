@@ -10,15 +10,7 @@ session_start();
 // $keys['secret'] 	->
 // $url_Apidae 		->
 
-/*
-A FAIRE : Si il n'existe pas de période de fin dans les horaires, alors il faut soit dupliquer l'horaire, soir faire
-un ajout de 2 heures à l'horaire d'ouverture
-*/
 
-
-// http://api.apidae-tourisme.com/api/v002/recherche/list-objets-touristiques?query={%22projetId%22:%226993%22,%22apiKey%22:%22jHzGxOvz%22,%22criteresQuery%22:%22type:RESTAURATION%22}
-
-	// include "pages/config.php";
 	include "fonctions/fonctions_API.php";
 	
 	$_SESSION['last_version'] ="V2022-11-17-V1-TSK"; 
@@ -28,7 +20,7 @@ un ajout de 2 heures à l'horaire d'ouverture
  	  "secret"=>$_GET['secret']  /* Pour OpenAgenda en mode �criture et autres*/
 	);
 	
-	$agendaUid=$_GET['agendaUid']; //65630513; /* <uid:65630513> */
+	$agendaUid=$_GET['agendaUid'];  
 	// $territoireIds=array("5693912"); /* Conseil de territoire : Pays de Martigues */ 
 	// $selectionIds=array("133484");
 	$selectionIds=array($_GET['selectionIds1']);
@@ -97,15 +89,12 @@ un ajout de 2 heures à l'horaire d'ouverture
 	$results_OpenAgenda = API_Resource($url_OpenAgenda);
 	$results_OA = json_decode($results_OpenAgenda,false);
 	
-	//  65550273 <- Martigues Bouge
-	
+
 	$route = "https://openagenda.com/agendas/".$agendaUid."/events.v2.json?key=".$keys['public'];
 
-	// echo "Route : ".$route."<br>";
 	
 	$nbmanif=$results->numFound; 
 	
-	// echo " NB Manif ".$nbmanif."<br>";
 
 	$retobjetsTouristiques = $results->objetsTouristiques;
 
@@ -116,12 +105,9 @@ un ajout de 2 heures à l'horaire d'ouverture
 
 	foreach($retobjetsTouristiques as $fiche=>$retourfiche)	
 	{
-		// foreach ($lesdates as $retourfiche)	
-		// {
 			$data_apidae[$sizeapidae]=$retourfiche->nom->libelleFr;
 			$lecture_arr_id[$sizeapidae]=$retourfiche->id;
 			$sizeapidae++;
-		// }
 	}
 	$arr_id=array_unique($lecture_arr_id);
 
@@ -131,7 +117,7 @@ un ajout de 2 heures à l'horaire d'ouverture
 		$data_openagenda	[$sizeopenagenda]=$obj->events[$sizeopenagenda]->title->fr;
 		$data_openagenda_uid[$sizeopenagenda]=$obj->events[$sizeopenagenda]->uid;
 		$data_openagenda_loc[$sizeopenagenda]=$obj->events[$sizeopenagenda]->location->uid;		
-	// echo $data_openagenda_loc[$sizeopenagenda]." ** <br>";
+		// echo $data_openagenda_loc[$sizeopenagenda]." ** <br>";
 	} 
 	while ($obj->events[++$sizeopenagenda]->title->fr!="");
 	
@@ -892,9 +878,9 @@ un ajout de 2 heures à l'horaire d'ouverture
 										}
 									}
 								if ($reservation_registration!="") {
-									echo '<a href="#" class="btn btn-sm btn-alt m-r-5" onclick="window.open(\''.$reservation_registration.'\',\'lien de réservation\',\'width=800, height=600\')"><img src="img/icon/link-ok.png" alt="" style="height:18px;width:18px;"></a>';
+									echo '<a href="#" class="btn btn-sm btn-alt m-r-5" onclick="window.open(\''.$reservation_registration.'\',\'lien de réservation\',\'width=800, height=600\')"><img src="img/link-ok.png" alt="" style="height:18px;width:18px;"></a>';
 								} else {
-										echo '<a href="#" class="btn btn-sm btn-alt m-r-5"><img src="img/icon/link-brocken.png" alt="" style="height:18px;width:18px;"></a>';
+										echo '<a href="#" class="btn btn-sm btn-alt m-r-5"><img src="img/link-brocken.png" alt="" style="height:18px;width:18px;"></a>';
 								}
 									
 								echo '</div>';
