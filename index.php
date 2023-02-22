@@ -15,7 +15,7 @@ session_start();
 
 	include "fonctions/fonctions_API.php";
 	
-	$_SESSION['last_version'] ="V2022-11-17-V1-TSK"; 
+	$_SESSION['last_version'] ="V2023-02-22-V1-TSK"; 
 
 	$keys = array( /* Les clés API permettent de lire et écrire des données sur OpenAgenda via l'API. */
  	  "public"=>$_GET['public'], /* Pour OpenAgenda en lecture */
@@ -435,11 +435,41 @@ session_start();
 									$date_ouverture	=$json_event_date_ouverture->periodesOuvertures[$nb_date_ouverture]->dateDebut;
 									
 
-	/* GESTION DES ERREURS DE DATE */	
+	
 									sscanf($begin, 	"%4s-%2s-%2sT%2s:%2s:%2s"	,$annee_begin	, $mois_begin	, $jour_begin	, $heure_begin	, $minute_begin	, $seconde_begin);
 									sscanf($end, 	"%4s-%2s-%2sT%2s:%2s:%2s"	, $annee_end	, $mois_end		, $jour_end		, $heure_end	, $minute_end	, $seconde_end);
+																		
+									$debut_jour = $jour_begin;
+									$debut_mois = $mois_begin;
+									$debut_annee = $annee_begin;
+
+									$fin_jour = $jour_end;
+									$fin_mois = $mois_end;
+									$fin_annee = $annee_end;
+
+									$debut_date = mktime(0, 0, 0, $debut_mois, $debut_jour, $debut_annee);
+									$fin_date 	= mktime(0, 0, 0, $fin_mois, $fin_jour, $fin_annee);
+
+									$data_debut_date[$dd]	= "DEBUT  >".$annee_begin." - "	. $mois_begin." - "	.$jour_begin." - "	.$heure_begin." - "	.$minute_begin." - ".$seconde_begin;
+									$data_fin_date[++$dd]	= "FIN    >".$annee_end." - "	.$mois_end." - "	.$jour_end." - "	.$heure_end." - "	.$minute_end." - "	.$seconde_end;
+
+									if ($heure_begin=="") 		$heure_begin="08";
+									if ($minute_begin=="") 		$minute_begin="00";
+									if ($seconde_begin=="") 		$seconde_begin="00";
+									if ($heure_end=="") 		$heure_end="18";
+									if ($minute_end=="") 		$minute_end="00";
+									if ($seconde_end=="") 		$seconde_end="00";
 									
-									if ($jour_begin!=$jour_end)  {
+									for($i = $debut_date; $i <= $fin_date; $i+=86400)	{
+										//2023-07-03T12:00:00+0200
+										$begintest =date("Y-m-d",$i)."T".$heure_begin.":".$minute_begin.":".$seconde_begin;
+										$endtest   =date("Y-m-d",$i)."T".$heure_end.":".$minute_end.":".$seconde_end;		
+										$event_heure_ouverture[] = array('begin' => $begintest."+0200", 'end' => $endtest."+0200");										
+									}									
+									
+/* GESTION DES ERREURS DE DATE */									
+									
+/*									if ($jour_begin!=$jour_end)  {
 										$erreur_jour_different_id[$nb_date_ouverture]="OUI";
 										$erreur_jour_different_begin[$nb_date_ouverture]=$begin;
 										$erreur_jour_different="OUI";
@@ -448,12 +478,14 @@ session_start();
 									
 									if ($mois_begin!=$mois_end)  {
 										$erreur_mois_different_id[$nb_date_ouverture]="OUI";
-										$erreur_mois_different_end[$nb_date_ouverture]=$end; /* AVANT LA CORRECTION */
+										$erreur_mois_different_end[$nb_date_ouverture]=$end; // AVANT LA CORRECTION 
 										$erreur_mois_different="OUI";
 										$end=$annee_end.'-'.$mois_begin.'-'.$jour_end.'T'.$heure_end.':'.$minute_end.':'.$seconde_end;
 									}
 									
 									$event_heure_ouverture[] = array('begin' => $begin."+0200", 'end' => $end."+0200");
+								
+*/							
 								} 
 								while ($json_event_date_ouverture->periodesOuvertures[++$nb_date_ouverture]->dateDebut!="");
 								
@@ -522,13 +554,24 @@ session_start();
 								
 								$reservation_registration=$retourfiche->reservation->organismes[0]->moyensCommunication[0]->coordonnees->fr;
 								
-								$letterslug = array("'", " ");	 /* 1 - Construction de slug ... la menace de Namek ? */ 
-								$letterslug = array(",", " ");
+								$reservation_registration=$retourfiche->reservation->organismes[0]->moyensCommunication[0]->coordonnees->fr;
+								
+								$letterslug = array("'", ",", ";"," "," ");	 /* 1 - Construction de slug ... la menace de Namek ? */ 
+								
 								$search  = array('À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ù', 'Ú', 'Û', 'Ü', 'Ý', 'à', 'á', 'â', 'ã', 'ä', 'å', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ò', 'ó', 'ô', 'õ', 'ö', 'ù', 'ú', 'û', 'ü', 'ý', 'ÿ');
 								//Préférez str_replace à strtr car strtr travaille directement sur les octets, ce qui pose problème en UTF-8
 								$replace = array('A', 'A', 'A', 'A', 'A', 'A', 'C', 'E', 'E', 'E', 'E', 'I', 'I', 'I', 'I', 'O', 'O', 'O', 'O', 'O', 'U', 'U', 'U', 'U', 'Y', 'a', 'a', 'a', 'a', 'a', 'a', 'c', 'e', 'e', 'e', 'e', 'i', 'i', 'i', 'i', 'o', 'o', 'o', 'o', 'o', 'o', 'u', 'u', 'u', 'u', 'y', 'y');
-								$titre_replace = str_replace($search, $replace, $titre);
+
+								$search_clean  = array('<', '>', '"', '(', ')');
+
+								
+								$titre_replace = str_replace	($search, $replace, $titre); /* Plus de caractères speciaux */
+								$titre_replace 	= str_replace	($search_clean,"", $titre_replace); /* Plus de caractères speciaux */								
+								
 								$slug = str_replace($letterslug, "-", strtolower($titre_replace));
+								$slug = str_replace(":","", $slug); 
+
+								$slug = str_replace("--","-", $slug); 	
 								
 																
 								/* Après analyse du retour du fichier Json OPENAGENDA - il est possible qu'il en manque ! 
@@ -587,9 +630,13 @@ session_start();
 										$event_heure_ouverture[$i]['end']=substr($event_heure_ouverture[$i]['end'],0, 11)."20:00:00+0200";
 									}
 								
-								if ($reservation_registration=="") 	$erreur_reservation_registration="OUI"; 
+								$descriptifCourt = str_replace("«","\"", $descriptifCourt); 
+								$descriptifCourt = str_replace("»","\"", $descriptifCourt); 								
+								
+								if ($reservation_registration[0]=="") 	{ $erreur_reservation_registration="OUI"; $reservation_registration[0]="https://www.martigues-tourisme.com/"; }
 
-								$Openagenda_event_data = array(
+
+									$Openagenda_event_data = array(
 									  'title' => array(
 										'fr' => $titre_test.$titre
 									  ),
@@ -629,12 +676,8 @@ session_start();
 									$result_event=json_decode($received_content_id_event,false);
 								}
 
-								if ($_GET['taille_fiches']=="") 
-									$taille_fiches=3;
-								else
-									$taille_fiches=$_GET['taille_fiches'];
 								
-								echo '<div class="col-lg-'.$taille_fiches.'">'; /* width:396px;min-width: 200px;max-width: 400px; */
+								echo '<div class="col-lg-3">'; /* width:396px;min-width: 200px;max-width: 400px; */
 								echo '<div class="tile" style="height: 570px;min-height: 600px; max-height: 650px;">';
 								
 								if (($_GET['id_create']==$retourfiche->id) || ($_GET['id_update']==$retourfiche->id))	{
@@ -846,6 +889,25 @@ session_start();
 									$ds=json_encode($Openagenda_event_data);
 									print_r($ds);
 								echo "</pre>";
+								
+								echo "<hr>"; /* affichage des valeurs pour debug */
+								echo '<div id="div2">';
+								echo "<b>title></b>"			.$Openagenda_event_data['title']['fr']."<br>";
+								echo "<b>state></b>"			.$Openagenda_event_data['state']."<br>";
+								echo "<b>image></b>"			.$Openagenda_event_data['image']['url']."<br>";
+								echo "<b>imageCredits></b>"		.$Openagenda_event_data['imageCredits']."<br>";
+								echo "<b>longDescription></b>"	.$Openagenda_event_data['longDescription']."<br>";
+								echo "<b>description></b>"		.$Openagenda_event_data['description']['fr']."<br>";
+								echo "<b>image></b>"			.$Openagenda_event_data['image']['url']."<br>";
+								echo "<b>registration></b>"		.$Openagenda_event_data['registration']."<br>";
+								echo "<b>thematique</b>>"		.$Openagenda_event_data['thematique']."<br>";
+								echo "<b>fadas></b>"			.$Openagenda_event_data['fadas']."<br>";
+								echo "<b>featured></b>"			.$Openagenda_event_data['featured']."<br>";
+								echo "<b>KeyWord></b>"			.$Openagenda_event_data['keywords']['fr']."<br>";
+								echo "<b>Timing></b>"			.$Openagenda_event_data['timings'][0]['begin']." | ".$Openagenda_event_data['timings'][0]['end']."<br>";
+								echo "<b>Slug></b>"				.$Openagenda_event_data['slug']."<br>";
+								echo '</div>';								
+								
 								echo '</div>';
 /* ***************************************************************************************************************************************** */								
 								
