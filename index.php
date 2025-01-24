@@ -13,9 +13,32 @@ session_start();
 // 
 // Cette interface est un extrait de l'Exttranet de l'Office de Tourisme.
 
-	include "fonctions/fonctions_API.php";
+/*
+
+├── config                         Fichier de configuration pour ne pas avoir les clefs dans l'URL 
+├── css				              Feuille de style de l'interface avec les différents fonds du site web 
+├── fonction 			          Contient la fonction de l'API  
+├── font                          Dossier du module "explorateur de fichier" dans l'extranet 
+│         ├── fontawesome          Toutes les polices  
+│         ├── icon 		          Icon du projet 
+│         └── open-sans           Autres polices 
+├── img                           miniature des images de fond 
+│        └── body                 Image de fond Full taille 
+└── js                            Code Javascript 
+
+*/
+
+
+	if (!file_exists("fonctions/fonctions_API.php")) 	{	
+		header ('Location: 404.php?fonctions');
+		exit();	
+	} 
+	else { 	
+		include "fonctions/fonctions_API.php";
+	}
+
 	
-	$_SESSION['last_version'] ="V2023-02-22-V1-TSK"; 
+	$_SESSION['last_version'] ="V2025-01-24-V1-TSK"; 
 
 	$keys = array( /* Les clés API permettent de lire et écrire des données sur OpenAgenda via l'API. */
  	  "public"=>$_GET['public'], /* Pour OpenAgenda en lecture */
@@ -45,27 +68,26 @@ session_start();
 	$requete['identifiants'] = $identifiants;
 	$requete['apiKey'] = $apiKey;
 	$requete['projetId'] = $projetId;
-	// $requete['dateDebut'] = date("Y-m-d");   // $requete['dateDebut'] = "2022-09-10";
+	// $requete['dateDebut'] = date("Y-m-d");   
+	// $requete['dateDebut'] = "2022-09-10";
 
-//	$requete["responseFields"] = array("@all");
+	// $requete["responseFields"] = array("@all");
 	// $requete["responseFields"] = array("@default");
 
- 
 	 $requete["responseFields"] = array("id",
-										"nom",
-										"theme",
-										"localisation",
-										"descriptionTarif",
-										"presentation",
-										"reservation",
-										"prestations",
-										"illustrations",
-										"aspects",
-										"informations",
-										"datesOuverture",
-										"ouverture",
-										"@informationsObjetTouristique");
-
+						"nom",
+						"theme",
+						"localisation",
+						"descriptionTarif",
+						"presentation",
+						"reservation",
+						"prestations",
+						"illustrations",
+						"aspects",
+						"informations",
+						"datesOuverture",
+						"ouverture",
+						"@informationsObjetTouristique");
 	
 	//$url_Apidae = $apiDomain."v002/agenda/detaille/list-objets-touristiques/";
 	$url_Apidae = $apiDomain."v002/recherche/list-objets-touristiques/";
@@ -75,13 +97,10 @@ session_start();
 
 	$url_OpenAgenda="https://openagenda.com/agendas/".$agendaUid."/events.v2.json?key=".$keys['public'];
 	
-	$department		= 	"Bouches-du-Rhône";
-	$timezone		=	"Europe/Paris";
-	$countryCode 	= 	"FR";
-
-
-	
-	$boucle=0; /* gestion d'affichage */
+	$department  = 	"Bouches-du-Rhône";
+	$timezone    =	"Europe/Paris";
+	$countryCode = 	"FR";
+ 	$boucle=0; /* gestion d'affichage */
 	
 	$accessToken = access_token_get($keys['secret']);
 
@@ -90,13 +109,9 @@ session_start();
 
 	$results_OpenAgenda = API_Resource($url_OpenAgenda);
 	$results_OA = json_decode($results_OpenAgenda,false);
-	
 
 	$route = "https://openagenda.com/agendas/".$agendaUid."/events.v2.json?key=".$keys['public'];
-
-	
 	$nbmanif=$results->numFound; 
-	
 
 	$retobjetsTouristiques = $results->objetsTouristiques;
 
